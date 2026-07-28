@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ShoppingBag, X, Plus, Minus, Leaf, ChevronRight, Star, Check, ArrowLeft } from "lucide-react";
+import { ShoppingBag, X, Plus, Minus, Leaf, ChevronRight, Check, ArrowLeft } from "lucide-react";
 import { TermsPage, PrivacyPage, RefundPage, ShippingPage } from "./LegalPages.jsx";
 import { BUSINESS } from "./business.js";
 
@@ -21,6 +21,7 @@ const PRODUCTS = [
   {
     id: "p1",
     name: "Livovoraa Syrup",
+    image: "/products/p1.jpg",
     category: "Liver Care",
     format: "Syrup",
     size: "200 ml",
@@ -39,6 +40,7 @@ const PRODUCTS = [
   {
     id: "p2",
     name: "Livovoraa Capsules",
+    image: "/products/p2.jpg",
     category: "Liver Care",
     format: "Capsules",
     size: "30 capsules",
@@ -57,6 +59,7 @@ const PRODUCTS = [
   {
     id: "p3",
     name: "Orthovoraa Syrup",
+    image: "/products/p3.jpg",
     category: "Ortho Care",
     format: "Syrup",
     size: "200 ml",
@@ -75,6 +78,7 @@ const PRODUCTS = [
   {
     id: "p4",
     name: "Orthovoraa Capsules",
+    image: "/products/p4.jpg",
     category: "Ortho Care",
     format: "Capsules",
     size: "30 capsules",
@@ -93,6 +97,7 @@ const PRODUCTS = [
   {
     id: "p5",
     name: "Cystovoraa Syrup",
+    image: "/products/p5.jpg",
     category: "Women's Wellness",
     format: "Syrup",
     size: "200 ml",
@@ -111,6 +116,7 @@ const PRODUCTS = [
   {
     id: "p6",
     name: "Cystovoraa Capsules",
+    image: "/products/p6.jpg",
     category: "Women's Wellness",
     format: "Capsules",
     size: "30 capsules",
@@ -129,6 +135,7 @@ const PRODUCTS = [
   {
     id: "p7",
     name: "Diavoraa Juice",
+    image: "/products/p7.jpg",
     category: "Diabetes Care",
     format: "Juice",
     size: "500 ml",
@@ -147,6 +154,7 @@ const PRODUCTS = [
   {
     id: "p8",
     name: "Diavoraa Capsules",
+    image: "/products/p8.jpg",
     category: "Diabetes Care",
     format: "Capsules",
     size: "30 capsules",
@@ -165,6 +173,7 @@ const PRODUCTS = [
   {
     id: "p9",
     name: "Fortifemvoraa Syrup",
+    image: "/products/p9.jpg",
     category: "Women's Wellness",
     format: "Syrup",
     size: "200 ml",
@@ -183,6 +192,7 @@ const PRODUCTS = [
   {
     id: "p10",
     name: "Cardiovoraa Syrup",
+    image: "/products/p10.jpg",
     category: "Heart Care",
     format: "Syrup",
     size: "200 ml",
@@ -391,6 +401,8 @@ export default function App() {
         .yk-btn-gold:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         .yk-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .yk-card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(15,46,34,0.18); }
+        .yk-photo-img { transition: transform 0.5s ease; }
+        .yk-photo-frame:hover .yk-photo-img { transform: scale(1.06); }
         .yk-fade-in { animation: ykFadeIn 0.6s ease both; }
         @keyframes ykFadeIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
         .yk-drawer { animation: ykSlideIn 0.35s cubic-bezier(.2,.8,.2,1) both; }
@@ -504,9 +516,8 @@ export default function App() {
               {PRODUCTS.filter((p) => activeCategory === "All" || p.category === activeCategory).map((p) => (
                 <div key={p.id} className="yk-card" style={{ background: "#fff", borderRadius: 8, overflow: "hidden", border: "1px solid #E4D9C3", position: "relative", display: "flex", flexDirection: "column" }}>
                   {p.badge && <WaxBadge text={p.badge} />}
-                  <div onClick={() => setActiveProduct(p)} style={{ cursor: "pointer", background: "#0F2E22", height: 200, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-                    <LeafPattern opacity={0.1} />
-                    <div style={{ transform: "scale(0.75)" }}><BottleArt /></div>
+                  <div onClick={() => setActiveProduct(p)} className="yk-photo-frame" style={{ cursor: "pointer", background: "#F4EFE4", height: 240, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
+                    <img src={p.image} alt={p.name} className="yk-photo-img" style={{ width: "100%", height: "100%", objectFit: "cover" }} loading="lazy" />
                   </div>
                   <div style={{ padding: "20px 20px 22px", flex: 1, display: "flex", flexDirection: "column" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
@@ -528,18 +539,11 @@ export default function App() {
             </div>
           </section>
 
-          <section style={{ background: "#0F2E22", color: "#F4EFE4", padding: "56px 24px" }}>
-            <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 32, textAlign: "center" }}>
-              {[
-                { k: "100%", v: "Plant-derived formulas" },
-                { k: "5,000+", v: "Daily rituals shipped" },
-                { k: "4.8", v: "Average rating", icon: true },
-              ].map((s, i) => (
-                <div key={i}>
-                  <div className="yk-serif" style={{ fontSize: 34, color: "#C9A063", fontWeight: 600, display: "flex", justifyContent: "center", alignItems: "center", gap: 6 }}>
-                    {s.k} {s.icon && <Star size={20} fill="#C9A063" color="#C9A063" />}
-                  </div>
-                  <div style={{ fontSize: 13, opacity: 0.75, marginTop: 6, letterSpacing: 0.5 }}>{s.v}</div>
+          <section style={{ background: "#0F2E22", color: "#F4EFE4", padding: "44px 24px" }}>
+            <div style={{ maxWidth: 900, margin: "0 auto", display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "18px 40px", textAlign: "center" }}>
+              {["100% Ayurvedic formulations", "Made in India", "Rooted in traditional recipes", "Crafted with natural herbs"].map((t, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, opacity: 0.85, letterSpacing: 0.3 }}>
+                  <Leaf size={14} color="#C9A063" /> {t}
                 </div>
               ))}
             </div>
@@ -685,9 +689,8 @@ export default function App() {
             <button onClick={() => setActiveProduct(null)} style={{ position: "absolute", top: 14, right: 14, background: "rgba(255,255,255,0.85)", border: "none", borderRadius: "50%", width: 32, height: 32, cursor: "pointer", zIndex: 2 }}>
               <X size={16} />
             </button>
-            <div style={{ flex: "1 1 240px", background: "#0F2E22", minHeight: 260, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-              <LeafPattern opacity={0.1} />
-              <BottleArt />
+            <div style={{ flex: "1 1 240px", background: "#F4EFE4", minHeight: 320, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
+              <img src={activeProduct.image} alt={activeProduct.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             </div>
             <div style={{ flex: "1 1 300px", padding: 32 }}>
               <div style={{ fontSize: 11, letterSpacing: 1, color: "#7C9070", fontWeight: 700, marginBottom: 6 }}>{activeProduct.tagline.toUpperCase()} · {activeProduct.format}, {activeProduct.size}</div>
