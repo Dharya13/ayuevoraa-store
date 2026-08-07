@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ShoppingBag, X, Plus, Minus, Leaf, ChevronRight, Check, ArrowLeft } from "lucide-react";
-import { TermsPage, PrivacyPage, RefundPage, ShippingPage } from "./LegalPages.jsx";
+import { ShoppingBag, X, Plus, Minus, Leaf, ChevronRight, Check, ArrowLeft, Heart } from "lucide-react";
+import { TermsPage, PrivacyPage, ShippingPage } from "./LegalPages.jsx";
 import { BUSINESS } from "./business.js";
 
 /* ---------------------------------------------------------
@@ -29,7 +29,7 @@ const PRODUCTS = [
     price: 198,
     oldPrice: null,
     badge: "Bestseller",
-    short: "A traditional Ayurvedic syrup formulated to support healthy liver function as part of your daily routine.",
+    short: "Supports daily toxin elimination and healthy digestion, easing everyday strain on the liver.",
     ingredients: ["Bhumyamalaki", "Kutki", "Punarnava", "Kalmegh"],
     ritual: [
       "Take 10ml (two teaspoons) twice daily, after meals",
@@ -105,7 +105,7 @@ const PRODUCTS = [
     price: 230,
     oldPrice: null,
     badge: null,
-    short: "A traditional syrup blend formulated to support women's hormonal balance and cyclical wellness.",
+    short: "Naturally conditions women's health, caring for hormonal balance including PCOS-related wellness.",
     ingredients: ["Ashoka", "Lodhra", "Shatavari", "Turmeric"],
     ritual: [
       "Take 10ml (two teaspoons) twice daily, after meals",
@@ -124,7 +124,7 @@ const PRODUCTS = [
     price: 310,
     oldPrice: null,
     badge: null,
-    short: "A capsule formula to support hormonal balance and women's cyclical wellness.",
+    short: "Naturally conditions women's health, caring for hormonal balance including PCOS-related wellness.",
     ingredients: ["Ashoka", "Lodhra", "Shatavari", "Turmeric"],
     ritual: [
       "Take 1–2 capsules twice daily, after meals, with water",
@@ -139,11 +139,11 @@ const PRODUCTS = [
     category: "Diabetes Care",
     format: "Juice",
     size: "500 ml",
-    tagline: "Support for healthy blood sugar",
+    tagline: "Daily glucose maintenance",
     price: 570,
     oldPrice: null,
     badge: "New",
-    short: "A bitter-herb juice blend formulated to support already-healthy blood sugar levels.",
+    short: "Maintains daily blood glucose levels, naturally — a juice ritual suited for prediabetic and diabetic routines.",
     ingredients: ["Karela (Bitter gourd)", "Jamun", "Gudmar (Gymnema)", "Methi (Fenugreek)"],
     ritual: [
       "Take 20–30ml diluted in water, once daily before breakfast",
@@ -158,11 +158,11 @@ const PRODUCTS = [
     category: "Diabetes Care",
     format: "Capsules",
     size: "30 capsules",
-    tagline: "Blood sugar support, concentrated",
+    tagline: "Daily glucose maintenance",
     price: 300,
     oldPrice: null,
     badge: null,
-    short: "A capsule blend to support healthy blood sugar levels as part of a balanced routine.",
+    short: "Maintains daily blood glucose levels, naturally — a capsule ritual suited for prediabetic and diabetic routines.",
     ingredients: ["Karela (Bitter gourd)", "Jamun", "Gudmar (Gymnema)", "Methi (Fenugreek)"],
     ritual: [
       "Take 1–2 capsules twice daily, after meals, with water",
@@ -181,7 +181,7 @@ const PRODUCTS = [
     price: 210,
     oldPrice: null,
     badge: null,
-    short: "A daily Ayurvedic tonic formulated to support women's overall strength, energy, and wellness.",
+    short: "A blend of naturally toning herbs, crafted for better everyday wellness in women.",
     ingredients: ["Shatavari", "Ashwagandha", "Lodhra", "Amla"],
     ritual: [
       "Take 10ml (two teaspoons) twice daily, after meals",
@@ -196,12 +196,12 @@ const PRODUCTS = [
     category: "Heart Care",
     format: "Syrup",
     size: "200 ml",
-    tagline: "Everyday heart wellness",
+    tagline: "Powered by Seabuckthorn",
     price: 375,
     oldPrice: null,
     badge: "Signature",
-    short: "An Arjuna-based Ayurvedic syrup formulated to support healthy heart function and circulation.",
-    ingredients: ["Arjuna", "Pushkarmool", "Punarnava", "Garlic extract"],
+    short: "Built around Seabuckthorn — our hero ingredient — blended with powerful Ashwagandha and Arjuna for everyday heart wellness.",
+    ingredients: ["Seabuckthorn", "Ashwagandha", "Arjuna", "Punarnava"],
     ritual: [
       "Take 10ml (two teaspoons) twice daily, after meals",
       "Shake well before use",
@@ -214,6 +214,7 @@ const CATEGORIES = ["All", "Liver Care", "Ortho Care", "Women's Wellness", "Diab
 
 const money = (n) => `\u20B9${n.toLocaleString("en-IN")}`;
 const CART_KEY = "ayuevoraa-cart";
+const WISHLIST_KEY = "ayuevoraa-wishlist";
 
 // Set this in your Vercel project's environment variables as
 // VITE_RAZORPAY_KEY_ID (the public Key ID, never the Secret).
@@ -230,6 +231,63 @@ function LeafPattern({ opacity = 0.08, color = "#C9A063" }) {
         </pattern>
       </defs>
       <rect width="400" height="400" fill="url(#leafpat)" />
+    </svg>
+  );
+}
+
+function HerbArt() {
+  return (
+    <svg viewBox="0 0 240 320" width="100%" height="100%" style={{ maxWidth: 260 }}>
+      <defs>
+        <linearGradient id="herbGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#DDBB86" />
+          <stop offset="100%" stopColor="#C9A063" />
+        </linearGradient>
+      </defs>
+      {/* twine-tied stem */}
+      <line x1="120" y1="300" x2="120" y2="190" stroke="url(#herbGrad)" strokeWidth="2.5" />
+      <ellipse cx="120" cy="215" rx="14" ry="6" fill="none" stroke="#8A6B3D" strokeWidth="2" />
+      <ellipse cx="120" cy="223" rx="14" ry="6" fill="none" stroke="#8A6B3D" strokeWidth="2" />
+
+      {/* center sprig */}
+      <path d="M120 190 C 118 150, 122 110, 120 60" stroke="url(#herbGrad)" strokeWidth="2" fill="none" />
+      {[70,90,110,130,150,170].map((y,i) => (
+        <g key={"c"+i}>
+          <path d={`M120 ${y} C ${105-i} ${y-14}, ${98-i} ${y-6}, ${112-i} ${y+4}`} fill="none" stroke="#C9A063" strokeWidth="1.6" />
+          <path d={`M120 ${y} C ${135+i} ${y-14}, ${142+i} ${y-6}, ${128+i} ${y+4}`} fill="none" stroke="#C9A063" strokeWidth="1.6" />
+        </g>
+      ))}
+
+      {/* left sprig, angled */}
+      <path d="M120 210 C 95 190, 75 160, 55 110" stroke="url(#herbGrad)" strokeWidth="2" fill="none" />
+      {[0,1,2,3,4,5].map((i) => {
+        const t = 0.15 + i*0.14;
+        const x = 120 + (55-120)*t;
+        const y = 210 + (110-210)*t;
+        return (
+          <g key={"l"+i} transform={`rotate(${-25-i*4} ${x} ${y})`}>
+            <path d={`M${x} ${y} q -16 -4 -20 8 q 14 4 20 -8 Z`} fill="none" stroke="#7C9070" strokeWidth="1.4" />
+          </g>
+        );
+      })}
+
+      {/* right sprig, angled */}
+      <path d="M120 210 C 145 190, 165 160, 185 110" stroke="url(#herbGrad)" strokeWidth="2" fill="none" />
+      {[0,1,2,3,4,5].map((i) => {
+        const t = 0.15 + i*0.14;
+        const x = 120 + (185-120)*t;
+        const y = 210 + (110-210)*t;
+        return (
+          <g key={"r"+i} transform={`rotate(${25+i*4} ${x} ${y})`}>
+            <path d={`M${x} ${y} q 16 -4 20 8 q -14 4 -20 -8 Z`} fill="none" stroke="#7C9070" strokeWidth="1.4" />
+          </g>
+        );
+      })}
+
+      {/* small blossoms at tips */}
+      <circle cx="120" cy="58" r="4" fill="none" stroke="#C9A063" strokeWidth="1.4" />
+      <circle cx="55" cy="108" r="3.5" fill="none" stroke="#C9A063" strokeWidth="1.4" />
+      <circle cx="185" cy="108" r="3.5" fill="none" stroke="#C9A063" strokeWidth="1.4" />
     </svg>
   );
 }
@@ -285,7 +343,31 @@ export default function App() {
   const [paying, setPaying] = useState(false);
   const [payError, setPayError] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const [wishlist, setWishlist] = useState([]);
   const toastTimer = useRef(null);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(WISHLIST_KEY);
+      if (raw) setWishlist(JSON.parse(raw));
+    } catch (e) {}
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist));
+  }, [wishlist]);
+
+  const toggleWishlist = (product) => {
+    setWishlist((prev) => {
+      const isLiked = prev.includes(product.id);
+      if (isLiked) {
+        showToast(`Removed ${product.name} from favourites`);
+        return prev.filter((id) => id !== product.id);
+      }
+      showToast(`${product.name} added to favourites`);
+      return [...prev, product.id];
+    });
+  };
 
   useEffect(() => {
     try {
@@ -420,7 +502,7 @@ export default function App() {
         borderBottom: "1px solid rgba(201,160,99,0.3)",
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }} onClick={() => setView("shop")}>
-          <img src="/logo.jpg" alt={`${BRAND.name} ${BRAND.suffix}`} style={{ width: 40, height: 40, borderRadius: "50%", objectFit: "cover" }} />
+          <img src="/logo.png" alt={`${BRAND.name} ${BRAND.suffix}`} style={{ width: 44, height: 44, objectFit: "contain" }} />
           <div>
             <div className="yk-serif" style={{ fontSize: 19, fontStyle: "italic", lineHeight: 1.1 }}>{BRAND.name}</div>
             <div style={{ fontSize: 9.5, letterSpacing: 2, opacity: 0.75 }}>{BRAND.suffix.toUpperCase()}</div>
@@ -463,7 +545,7 @@ export default function App() {
               </button>
             </div>
             <div className="yk-fade-in" style={{ position: "relative", zIndex: 1, animationDelay: "0.15s" }}>
-              <BottleArt />
+              <HerbArt />
             </div>
           </section>
 
@@ -474,10 +556,10 @@ export default function App() {
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20 }}>
               {[
-                { t: "Liver Care", d: "Daily support for healthy liver function and digestion." },
+                { t: "Liver Care", d: "Daily toxin elimination and support for healthy digestion." },
                 { t: "Ortho Care", d: "Joint flexibility and everyday bone comfort." },
-                { t: "Women's Wellness", d: "Hormonal balance and cyclical wellness." },
-                { t: "Diabetes Care", d: "Support for healthy, balanced blood sugar." },
+                { t: "Women's Wellness", d: "Hormonal balance and PCOS-related wellness." },
+                { t: "Diabetes Care", d: "Daily blood glucose maintenance, naturally." },
                 { t: "Heart Care", d: "Everyday support for heart function and circulation." },
               ].map((c, idx) => (
                 <div key={idx} className="yk-card" style={{ background: "#ECE4D3", padding: "26px 22px", borderRadius: 6, borderLeft: "3px solid #C9A063", cursor: "pointer" }}
@@ -516,6 +598,17 @@ export default function App() {
               {PRODUCTS.filter((p) => activeCategory === "All" || p.category === activeCategory).map((p) => (
                 <div key={p.id} className="yk-card" style={{ background: "#fff", borderRadius: 8, overflow: "hidden", border: "1px solid #E4D9C3", position: "relative", display: "flex", flexDirection: "column" }}>
                   {p.badge && <WaxBadge text={p.badge} />}
+                  <button
+                    onClick={(e) => { e.stopPropagation(); toggleWishlist(p); }}
+                    aria-label={wishlist.includes(p.id) ? "Remove from favourites" : "Add to favourites"}
+                    style={{
+                      position: "absolute", top: 14, right: 14, zIndex: 2, background: "rgba(255,255,255,0.9)",
+                      border: "none", borderRadius: "50%", width: 34, height: 34, cursor: "pointer",
+                      display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+                    }}
+                  >
+                    <Heart size={16} color={wishlist.includes(p.id) ? "#A9432E" : "#5A4E3C"} fill={wishlist.includes(p.id) ? "#A9432E" : "none"} />
+                  </button>
                   <div onClick={() => setActiveProduct(p)} className="yk-photo-frame" style={{ cursor: "pointer", background: "#F4EFE4", height: 240, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
                     <img src={p.image} alt={p.name} className="yk-photo-img" style={{ width: "100%", height: "100%", objectFit: "cover" }} loading="lazy" />
                   </div>
@@ -550,14 +643,24 @@ export default function App() {
           </section>
 
           <footer style={{ padding: "40px 24px", textAlign: "center", background: "#0A2018", color: "#B8A88C", fontSize: 12.5 }}>
-            <img src="/logo.jpg" alt={BRAND.name} style={{ width: 44, height: 44, borderRadius: "50%", margin: "0 auto 12px", objectFit: "cover" }} />
+            <img src="/logo.png" alt={BRAND.name} style={{ width: 64, height: 64, margin: "0 auto 12px", objectFit: "contain" }} />
             <div className="yk-serif" style={{ fontSize: 18, fontStyle: "italic", color: "#F4EFE4", marginBottom: 4 }}>{BRAND.name} {BRAND.suffix}</div>
             <p>{BRAND.tagline}. Consult a physician before starting any new herbal regimen.</p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 20, justifyContent: "center", margin: "16px 0", fontSize: 12.5 }}>
+              <a href={`mailto:${BUSINESS.supportEmail}`} style={{ color: "#F4EFE4", textDecoration: "none" }}>
+                ✉ {BUSINESS.supportEmail}
+              </a>
+              <a href={`https://wa.me/${BUSINESS.whatsappNumber}`} target="_blank" rel="noopener noreferrer" style={{ color: "#F4EFE4", textDecoration: "none" }}>
+                WhatsApp us
+              </a>
+              <a href={BUSINESS.instagramUrl} target="_blank" rel="noopener noreferrer" style={{ color: "#F4EFE4", textDecoration: "none" }}>
+                Follow us on Instagram
+              </a>
+            </div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 18, justifyContent: "center", margin: "18px 0", fontSize: 12 }}>
               {[
                 ["Terms & Conditions", "terms"],
                 ["Privacy Policy", "privacy"],
-                ["Refund & Returns", "refund"],
                 ["Shipping Policy", "shipping"],
               ].map(([label, key]) => (
                 <button key={key} onClick={() => setView(key)} style={{ background: "none", border: "none", color: "#C9A063", cursor: "pointer", fontSize: 12, textDecoration: "underline", padding: 0 }}>
@@ -573,7 +676,6 @@ export default function App() {
 
       {view === "terms" && <TermsPage onBack={() => setView("shop")} />}
       {view === "privacy" && <PrivacyPage onBack={() => setView("shop")} />}
-      {view === "refund" && <RefundPage onBack={() => setView("shop")} />}
       {view === "shipping" && <ShippingPage onBack={() => setView("shop")} />}
 
       {view === "checkout" && (
